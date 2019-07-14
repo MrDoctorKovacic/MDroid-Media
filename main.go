@@ -38,7 +38,7 @@ func main() {
 	flag.Parse()
 
 	// Parse settings file
-	settingsData := settings.Setup(settingsFile)
+	settingsData, useVerboseOutput := settings.SetupSettings(settingsFile)
 
 	// Log settings
 	out, err := json.Marshal(settingsData)
