@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"os/exec"
 
-	"github.com/MrDoctorKovacic/MDroid-Core/external/bluetooth"
-	"github.com/MrDoctorKovacic/MDroid-Core/external/status"
+	"github.com/MrDoctorKovacic/MDroid-Core/bluetooth"
+	"github.com/MrDoctorKovacic/MDroid-Core/status"
 	"github.com/MrDoctorKovacic/MDroid-Core/settings"
 	"github.com/gorilla/mux"
 )
