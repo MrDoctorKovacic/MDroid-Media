@@ -8,8 +8,8 @@ import (
 	"os/exec"
 
 	"github.com/MrDoctorKovacic/MDroid-Core/bluetooth"
-	"github.com/MrDoctorKovacic/MDroid-Core/status"
 	"github.com/MrDoctorKovacic/MDroid-Core/settings"
+	"github.com/MrDoctorKovacic/MDroid-Core/status"
 	"github.com/gorilla/mux"
 )
 
@@ -48,7 +48,7 @@ func main() {
 	MainStatus.Log(status.OK(), "Using settings: "+string(out))
 
 	// Parse through config if found in settings file
-	config, ok := settingsData["CONFIG"]
+	config, ok := settingsData["MDROID"]
 	if ok {
 		// Set up bluetooth
 		bluetoothAddress, usingBluetooth := config["BLUETOOTH_ADDRESS"]
