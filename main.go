@@ -8,8 +8,8 @@ import (
 	"os/exec"
 
 	"github.com/MrDoctorKovacic/MDroid-Core/bluetooth"
+	"github.com/MrDoctorKovacic/MDroid-Core/logging"
 	"github.com/MrDoctorKovacic/MDroid-Core/settings"
-	"github.com/MrDoctorKovacic/MDroid-Core/status"
 	"github.com/gorilla/mux"
 )
 
@@ -19,7 +19,7 @@ type Config struct {
 }
 
 // MainStatus will control logging and reporting of status / warnings / errors
-var MainStatus = status.NewStatus("Main")
+var MainStatus = logging.NewStatus("Main")
 
 // Reboot the machine
 func reboot(w http.ResponseWriter, r *http.Request) {
@@ -45,7 +45,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	MainStatus.Log(status.OK(), "Using settings: "+string(out))
+	MainStatus.Log(logging.OK(), "Using settings: "+string(out))
 
 	// Parse through config if found in settings file
 	config, ok := settingsData["MDROID"]
@@ -57,7 +57,7 @@ func main() {
 			bluetooth.SetAddress(bluetoothAddress)
 		}
 	} else {
-		MainStatus.Log(status.Warning(), "No config found in settings file, not parsing through config")
+		MainStatus.Log(logging.Warning(), "No config found in settings file, not parsing through config")
 	}
 
 	// Init router
