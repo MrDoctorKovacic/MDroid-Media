@@ -43,6 +43,7 @@ func init() {
 func delayedStart() {
 	time.Sleep(2 * time.Second)
 	bluetooth.Connect()
+	bluetooth.Play()
 }
 
 // define our router and subsequent routes here
@@ -92,7 +93,7 @@ func main() {
 	router.HandleFunc("/bluetooth/prev", bluetooth.Prev).Methods("GET")
 	router.HandleFunc("/bluetooth/next", bluetooth.Next).Methods("GET")
 	router.HandleFunc("/bluetooth/pause", bluetooth.Pause).Methods("GET")
-	router.HandleFunc("/bluetooth/play", bluetooth.Play).Methods("GET")
+	router.HandleFunc("/bluetooth/play", bluetooth.HandlePlay).Methods("GET")
 	router.HandleFunc("/bluetooth/refresh", bluetooth.ForceRefresh).Methods("GET")
 
 	err = http.ListenAndServe(":5353", router)

@@ -196,11 +196,16 @@ func Next(w http.ResponseWriter, r *http.Request) {
 	format.WriteResponse(&w, r, format.JSONResponse{Output: "OK", OK: true})
 }
 
-// Play attempts to play bluetooth media
-func Play(w http.ResponseWriter, r *http.Request) {
-	log.Info().Msg("Attempting to play media...")
-	go SendDBusCommand([]string{"/org/bluez/hci0/dev_" + BluetoothAddress + "/player0", "org.bluez.MediaPlayer1.Play"}, false, false)
+// HandlePlay attempts to play bluetooth media
+func HandlePlay(w http.ResponseWriter, r *http.Request) {
+	Play()
 	format.WriteResponse(&w, r, format.JSONResponse{Output: "OK", OK: true})
+}
+
+// Play attempts to play bluetooth media
+func Play() {
+	log.Info().Msg("Attempting to play media...")
+	SendDBusCommand([]string{"/org/bluez/hci0/dev_" + BluetoothAddress + "/player0", "org.bluez.MediaPlayer1.Play"}, false, false)
 }
 
 // Pause attempts to pause bluetooth media
