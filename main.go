@@ -43,7 +43,7 @@ func init() {
 func delayedStart() {
 	time.Sleep(2 * time.Second)
 	bluetooth.Connect()
-	time.Sleep(1500 * time.Millisecond)
+	time.Sleep(2000 * time.Millisecond)
 	bluetooth.Play()
 }
 
