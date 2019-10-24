@@ -70,8 +70,14 @@ func SetAddress(address string) {
 	}
 }
 
+// HandleConnect wrapper for connect
+func HandleConnect(w http.ResponseWriter, r *http.Request) {
+	Connect()
+	format.WriteResponse(&w, r, format.JSONResponse{Output: "OK", OK: true})
+}
+
 // Connect bluetooth device
-func Connect(w http.ResponseWriter, r *http.Request) {
+func Connect() {
 	ScanOn()
 	log.Info().Msg("Connecting to bluetooth device...")
 	time.Sleep(13 * time.Second)
@@ -82,7 +88,6 @@ func Connect(w http.ResponseWriter, r *http.Request) {
 		true)
 
 	log.Info().Msg("Connection successful.")
-	format.WriteResponse(&w, r, format.JSONResponse{Output: "OK", OK: true})
 }
 
 // HandleDisconnect bluetooth device

@@ -63,6 +63,9 @@ func main() {
 	}
 	bluetooth.Setup(&configMap)
 
+	// Connect to device on start
+	go bluetooth.Connect()
+
 	// Init router
 	router := mux.NewRouter()
 
@@ -77,7 +80,7 @@ func main() {
 	router.HandleFunc("/bluetooth", bluetooth.GetDeviceInfo).Methods("GET")
 	router.HandleFunc("/bluetooth/getDeviceInfo", bluetooth.GetDeviceInfo).Methods("GET")
 	router.HandleFunc("/bluetooth/getMediaInfo", bluetooth.GetMediaInfo).Methods("GET")
-	router.HandleFunc("/bluetooth/connect", bluetooth.Connect).Methods("GET")
+	router.HandleFunc("/bluetooth/connect", bluetooth.HandleConnect).Methods("GET")
 	router.HandleFunc("/bluetooth/disconnect", bluetooth.HandleDisconnect).Methods("GET")
 	router.HandleFunc("/bluetooth/prev", bluetooth.Prev).Methods("GET")
 	router.HandleFunc("/bluetooth/next", bluetooth.Next).Methods("GET")
