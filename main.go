@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/MrDoctorKovacic/MDroid-Core/settings"
 	"github.com/MrDoctorKovacic/MDroid-Media/bluetooth"
@@ -38,6 +39,12 @@ func init() {
 	log.Logger = zerolog.New(output).With().Caller().Timestamp().Logger()
 }
 
+// Connect to device on start
+func delayedStart() {
+	time.Sleep(2 * time.Second)
+	bluetooth.Connect()
+}
+
 // define our router and subsequent routes here
 func main() {
 	flag.StringVar(&settings.Settings.File, "settings-file", "", "File to recover the persistent settings.")
@@ -63,8 +70,8 @@ func main() {
 	}
 	bluetooth.Setup(&configMap)
 
-	// Connect to device on start
-	go bluetooth.Connect()
+	// Delayed connect
+	go delayedStart()
 
 	// Init router
 	router := mux.NewRouter()
