@@ -4,7 +4,6 @@ package bluetooth
 import (
 	"fmt"
 	"net/http"
-	"regexp"
 	"strings"
 	"time"
 
@@ -13,36 +12,6 @@ import (
 	"github.com/gosimple/slug"
 	"github.com/rs/zerolog/log"
 )
-
-// Regex expressions for parsing dbus output
-var (
-	BluetoothAddress string
-	tmuxStarted      bool
-	replySerialRegex *regexp.Regexp
-	findStringRegex  *regexp.Regexp
-	cleanRegex       *regexp.Regexp
-)
-
-func init() {
-	replySerialRegex = regexp.MustCompile(`(.*reply_serial=2\n\s*variant\s*)array`)
-	findStringRegex = regexp.MustCompile(`string\s"(.*)"|uint32\s(\d)+`)
-	cleanRegex = regexp.MustCompile(`(string|uint32|\")+`)
-}
-
-// Setup bluetooth with address
-func Setup(configAddr *map[string]string) {
-	configMap := *configAddr
-	bluetoothAddress, usingBluetooth := configMap["BLUETOOTH_ADDRESS"]
-	if !usingBluetooth {
-		log.Warn().Msg("No bluetooth address found in config, using empty address")
-		BluetoothAddress = ""
-		return
-	}
-
-	SetAddress(bluetoothAddress)
-	log.Info().Msg("Enabling auto refresh of BT address")
-	go startAutoRefresh()
-}
 
 // startAutoRefresh will begin go routine for refreshing bt media device address
 func startAutoRefresh() {
@@ -208,9 +177,14 @@ func Play() {
 	SendDBusCommand([]string{"/org/bluez/hci0/dev_" + BluetoothAddress + "/player0", "org.bluez.MediaPlayer1.Play"}, false, false)
 }
 
+// HandlePause attempts to pause bluetooth media
+func HandlePause(w http.ResponseWriter, r *http.Request) {
+	Pause()
+	format.WriteResponse(&w, r, format.JSONResponse{Output: "OK", OK: true})
+}
+
 // Pause attempts to pause bluetooth media
-func Pause(w http.ResponseWriter, r *http.Request) {
+func Pause() {
 	log.Info().Msg("Attempting to pause media...")
 	go SendDBusCommand([]string{"/org/bluez/hci0/dev_" + BluetoothAddress + "/player0", "org.bluez.MediaPlayer1.Pause"}, false, false)
-	format.WriteResponse(&w, r, format.JSONResponse{Output: "OK", OK: true})
 }
